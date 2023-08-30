@@ -1,0 +1,13 @@
+#!/bin/bash
+
+base=$(amixer -M scontents | head -5 | tail -1)
+vol=$(echo $base | sed "s/.*[0-9] \[//" | sed "s/\%\].*//")
+state=$(echo $base | sed "s/.*\%.*\] //")
+echo -e "$vol% $state\n$vol%"
+case $vol in
+	100   ) echo "#FF0000";;
+	9[0-9]) echo "#FF8800";;
+	8[0-9]) echo "#FFFF00";;
+	*     ) echo "#00FF00"
+esac
+sleep 0.1

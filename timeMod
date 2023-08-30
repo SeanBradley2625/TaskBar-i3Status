@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#case $BLOCK_BUTTON in
+#	1) notify-send "$(cal | sed "s/ $(date '+%d' | sed 's/^0/ /g')/  ✘/g")" ;;
+#esac
+
+date '+%d/%b/%Y (%a) %H:%M:%S'

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#root=$(df -H | grep ' /$'    | awk '{ print $3 "/" $2 }')
+#boot=$(df -H | grep ' /boot' | awk '{ print $3 "/" $2 }')
+home=$(df -H | grep ' /home' | awk '{ print $3 "/" $2 }')
+used=$(df    | grep ' /home' | awk '{ print $3 }'       )
+full=$(df    | grep ' /home' | awk '{ print $2 }'       )
+perc=$(( ($used*100)/$full ))
+
+#case $BLOCK_BUTTON in
+#	1) notify-send "$(printf "DISK SPACE\nroot:\t$root\nboot:\t$boot\nhome:\t$home")" ;;
+#esac
+
+echo -e "$perc% ($home)\n$perc%"
+
+case $perc in
+	100       ) echo "#FF0000" ;;
+	9[0-9]    ) echo "#FF8800" ;;
+	[7-8][0-9]) echo "#FFFF00" ;;
+	*         ) echo "#00FF00" ;;
+esac

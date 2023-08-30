@@ -1,0 +1,13 @@
+#!/bin/bash
+
+brightness=$(cat /sys/class/backlight/amdgpu_bl0/brightness | awk '{ print ($1 / 255) * 100 }')
+
+printf "%i%%\n%i%%\n" $brightness $brightness
+
+case $cput in
+	100.*|[8-9][0-9].*) echo "#FF0000" ;;
+	[6-7][0-9].*      ) echo "#FF8800" ;;
+	[4-5][0-9].*      ) echo "#FFFF00" ;;
+	*                 ) echo "#00FF00" ;;
+esac
+sleep 0.1

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+time=$(uptime -p | cut -c4-)
+short=$(echo $time | awk '{ print $1 }')
+state=$(echo $time | awk '{ print $2 }')
+
+echo -e "$time\n$short"
+case $state in
+	"minutes"|"minute")
+		echo "#00FF00";;
+	"hours,"|"hour,"|"hours"|"hour")
+		case $short in
+			[0-9]|1[0-2]) echo "#00FF00";;
+			1[3-8]      ) echo "#FFFF00";;
+			19|2[0-4]   ) echo "#FF8800";;
+			*           ) echo "#FF0000";;
+		esac;;
+	*)
+		echo "#FF0000"
+esac

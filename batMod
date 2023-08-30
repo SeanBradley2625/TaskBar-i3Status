@@ -1,0 +1,24 @@
+#!/bin/bash
+
+bat=$(cat ~/Programs/Scripts/TaskBar/StatusFiles/batFile)
+state=$(cat /sys/class/power_supply/BAT0/status)
+full=$(cat /sys/class/power_supply/BAT0/charge_full 2>/dev/null || echo "100")
+now=$(cat /sys/class/power_supply/BAT0/charge_now 2>/dev/null || echo "100")
+percentage=$(( ($now*100)/$full ))
+
+if [[ $state == "Discharging" ]]; then
+	case $percentage in
+		100|[8-9][0-9]|7[6-9]) echo -e "[////] $percentage%\n$percentage\n#00FF00";;
+		5[1-9]|6[0-9]|7[0-5] ) echo -e "[///-] $percentage%\n$percentage\n#FFFF00";;
+		2[6-9]|[3-4][0-9]|50 ) echo -e "[//--] $percentage%\n$percentage\n#FF8800";;
+		*                    ) echo -e "[/---] $percentage%\n$percentage\n#FF0000";;
+	esac
+else
+	echo -n $bat
+	if [[ $bat == "[////]" ]]; then
+		sed -i "s/\/\/\/\//----/" ~/Programs/Scripts/TaskBar/StatusFiles/batFile
+	else
+		sed -i "s/-/\//" ~/Programs/Scripts/TaskBar/StatusFiles/batFile
+	fi
+	echo -e " $percentage%\n$percentage\n#8899FF"
+fi

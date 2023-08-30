@@ -1,0 +1,19 @@
+#!/bin/bash
+
+used=$(free | grep "Mem" | awk '{ print $3 }')
+total=$(free | grep "Mem" | awk '{ print $2 }')
+frac=$(free -h | grep "Mem" | awk '{ print $3 "/" $2 }')
+perc=$(( ($used*100)/$total ))
+
+#case $BLOCK_BUTTON in
+#	1) notify-send "MEMORY USAGE" "$(ps -eo comm,pmem --sort -pmem | head)" ;;
+#esac
+
+echo -e "$perc% ($frac)\n$frac"
+
+case $perc in
+	100|9[0-9]) echo "#FF0000" ;;
+	8[0-9]    ) echo "#FF8800" ;;
+	[5-7][0-9]) echo "#FFFF00" ;;
+	*         ) echo "#00FF00" ;;
+esac
